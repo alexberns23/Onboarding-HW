@@ -10,11 +10,11 @@ import static edu.wpi.first.units.Units.RotationsPerSecond;
 
 public class Shooter {
 
-    TalonFX motorDirection;
-    TalonFX motorSpeed;
+    private TalonFX motorDirection;
+    private TalonFX motorSpeed;
 
-    PIDController pController;
-    BangBangController bbController;
+    private PIDController pController;
+    private BangBangController bbController;
 
     public Shooter() {
         motorDirection = new TalonFX(1);

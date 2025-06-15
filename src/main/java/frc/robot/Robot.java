@@ -23,30 +23,32 @@ public class Robot extends TimedRobot {
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
-  public Robot() {}
+  Shooter shooter1;
 
-  
-  
-
-  @Override
-  public void robotPeriodic() {
-    Shooter shooter = new Shooter();
-
-    shooter.setSpeedAndPosition(20, 90.5);
+  public Robot() {
+    
+    shooter1 = new Shooter();
 
   }
+
+  @Override
+  public void robotPeriodic() {}
 
   @Override
   public void autonomousInit() {}
 
   @Override
-  public void autonomousPeriodic() {}
+  public void autonomousPeriodic() {
+    shooter1.setSpeedAndPosition(20, 10);
+  }
 
   @Override
   public void teleopInit() {}
 
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    shooter1.setSpeedAndPosition(30, 50);
+  }
 
   @Override
   public void disabledInit() {}

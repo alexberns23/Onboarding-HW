@@ -9,8 +9,8 @@ package frc.robot;
 
 
 
-
 import edu.wpi.first.wpilibj.TimedRobot;
+import frc.robot.Intake.Intake;
 
 
 /**
@@ -23,12 +23,13 @@ public class Robot extends TimedRobot {
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
-  Shooter shooter1;
+
+  Intake intake;
+
 
   public Robot() {
     
-    shooter1 = new Shooter();
-
+    intake = new Intake();
   }
 
   @Override
@@ -39,7 +40,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void autonomousPeriodic() {
-    shooter1.setSpeedAndPosition(20, 10);
+    
   }
 
   @Override
@@ -47,7 +48,9 @@ public class Robot extends TimedRobot {
 
   @Override
   public void teleopPeriodic() {
-    shooter1.setSpeedAndPosition(30, 50);
+    
+    intake.setSpeedAndPosition(100, 40);
+
   }
 
   @Override

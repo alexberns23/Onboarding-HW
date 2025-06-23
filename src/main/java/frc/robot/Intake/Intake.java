@@ -11,7 +11,7 @@ import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 
 
 
@@ -22,13 +22,15 @@ public class Intake {
 
     private PIDController pController;
     private BangBangController bbController;
+    private SimpleMotorFeedforward feedforward;
 
-    LinearSystem<N1, N1, N1> system = LinearSystemId.createFlywheelSystem(DCMotor.getKrakenX60(1), 0.01, 2);
+    LinearSystem<N1, N1, N1> system = LinearSystemId.createFlywheelSystem(DCMotor.getKrakenX60(1), 0.127, 2);
 
     public Intake () {
 
-        pController = new PIDController(10, 0, 1);
+        pController = new PIDController(1, 0, 0.1);
         bbController = new BangBangController(0.5);
+        feedforward = new SimpleMotorFeedforward(1, 0.1);
 
 
         arm = new SingleJointedArmSim(
@@ -53,12 +55,12 @@ public class Intake {
         SmartDashboard.putNumber("current speed", flywheel.getAngularVelocityRPM()/60);
 
         arm.setInputVoltage(pController.calculate(
-            arm.getAngleRads(), position) * 100000
+            arm.getAngleRads(), position) * 1000
         );
 
 
         flywheel.setInputVoltage(
-            bbController.calculate(
+            feedforward.calculateWithVelocities(
                 flywheel.getAngularVelocityRPM() / 60, speed
             ) * 12
         );

@@ -10,7 +10,8 @@ package frc.robot;
 
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import frc.robot.Intake.Intake;
+
+import frc.robot.Manager.Manager;
 
 
 /**
@@ -24,12 +25,12 @@ public class Robot extends TimedRobot {
    * initialization code.
    */
 
-  Intake intake;
+  Manager manager;
 
 
   public Robot() {
     
-    intake = new Intake();
+    manager = new Manager();
   }
 
   @Override
@@ -49,7 +50,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     
-    intake.setSpeedAndPosition(100, 40);
+    manager.periodic();
 
   }
 

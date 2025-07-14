@@ -1,6 +1,8 @@
 package frc.robot.Shooter;
 
-public enum ShooterState {
+import org.team7525.subsystem.SubsystemStates;
+
+public enum ShooterState implements SubsystemStates{
     SHOOTING("Shooting", 40, 50),
     OFF("Idle", 0, 0);
 

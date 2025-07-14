@@ -12,8 +12,10 @@ import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import org.team7525.subsystem.Subsystem;
 
-public class Shooter {
+
+public class Shooter extends Subsystem<ShooterState> {
     
     //This totally isn't just the intake code :)
 
@@ -28,6 +30,8 @@ public class Shooter {
     private BangBangController bbController;
 
     public Shooter() {
+        super("Shooter", ShooterState.OFF);
+
         flywheel = new FlywheelSim(system, DCMotor.getKrakenX60(1), 1);
 
         arm = new SingleJointedArmSim(
@@ -40,22 +44,22 @@ public class Shooter {
 
         bbController = new BangBangController(0.5);
         pController = new PIDController(10, 0, 1);
+
        
     }
 
-    public void setSpeedAndPosition(double speed, double position) {
-        
-        SmartDashboard.putNumber("set shooter position", position);
-        SmartDashboard.putNumber("set shooter speed", speed);
+    public void runState() {
+        SmartDashboard.putNumber("set shooter position", getState().getPosition());
+        SmartDashboard.putNumber("set shooter speed", getState().getSpeed());
         SmartDashboard.putNumber("current shooter position", arm.getAngleRads());
         SmartDashboard.putNumber("current shooter speed", flywheel.getAngularVelocityRPM() / 60);
 
         arm.setInputVoltage(
-            pController.calculate(arm.getAngleRads(), position) * 1000
+            pController.calculate(arm.getAngleRads(), getState().getPosition()) * 1000
         );
 
         flywheel.setInputVoltage(
-            bbController.calculate(flywheel.getAngularVelocityRPM() / 60, speed) * 12
+            bbController.calculate(flywheel.getAngularVelocityRPM() / 60, getState().getSpeed()) * 12
         );
 
         arm.update(0.02);
@@ -63,5 +67,10 @@ public class Shooter {
 
     }
 
+    //there's no sho this is an efficient way to do this
+    public boolean shouldStopShooting() {
+        if(this.getStateTime() > 1) {return true;}
+        else {return false;}
+    }
 
 }

@@ -12,9 +12,10 @@ import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 import edu.wpi.first.wpilibj.simulation.SingleJointedArmSim;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import org.team7525.subsystem.Subsystem;
 
 
-public class Intake {
+public class Intake extends Subsystem<IntakeState> {
 
     SingleJointedArmSim arm;
     FlywheelSim flywheel;
@@ -25,6 +26,7 @@ public class Intake {
     LinearSystem<N1, N1, N1> system = LinearSystemId.createFlywheelSystem(DCMotor.getKrakenX60(1), 0.127, 2);
 
     public Intake () {
+        super("Intake", IntakeState.OFF);
 
         pController = new PIDController(1, 0, 0.1);
         bbController = new BangBangController(0.5);
@@ -41,31 +43,28 @@ public class Intake {
 
     }
 
-
-
-    public void setSpeedAndPosition(double position, double speed) {
-
-        SmartDashboard.putNumber("set intake position", position);
-        SmartDashboard.putNumber("set intake speed", speed);
+    @Override
+    public void runState() {
+        
+        SmartDashboard.putNumber("set intake position", getState().getPosition());
+        SmartDashboard.putNumber("set intake speed", getState().getSpeed());
 
         SmartDashboard.putNumber("current intake position", arm.getAngleRads());
         SmartDashboard.putNumber("current intake speed", flywheel.getAngularVelocityRPM()/60);
 
         arm.setInputVoltage(pController.calculate(
-            arm.getAngleRads(), position) * 1000
+            arm.getAngleRads(), getState().getPosition()) * 1000
         );
 
 
         flywheel.setInputVoltage(
             bbController.calculate(
-                flywheel.getAngularVelocityRPM() / 60, speed
+                flywheel.getAngularVelocityRPM() / 60, getState().getSpeed()
             ) * 12
         );
 
         arm.update(0.02);
         flywheel.update(0.02);
-
-
     }
 
     

@@ -52,10 +52,7 @@ public class Manager extends Subsystem<ManagerStates>{
             addTrigger(ManagerStates.GOING_TO_STAGING, ManagerStates.STAGING, () -> !dropperSensor.get());
             addTrigger(ManagerStates.STAGING, ManagerStates.SCORING, controller::getXButtonPressed);
             addTrigger(ManagerStates.SCORING, ManagerStates.IDLE, () -> !dropperSensor.get());
-
-
-        
-            addTrigger(ManagerStates.SHOOTING, ManagerStates.IDLE, shooter::shouldStopShooting);
+            
             addTrigger(ManagerStates.SHOOTING, ManagerStates.IDLE, () -> this.getStateTime() > ManagerConstants.shootingTime);
 
         //from intaking

@@ -40,10 +40,4 @@ public class Shooter extends Subsystem<ShooterState> {
         return instance;
     }
 
-    //there's no shot this is an efficient way to do this
-    public boolean shouldStopShooting() {
-        if(this.getStateTime() > ShooterConstants.secStopShooting) {return true;}
-        else {return false;}
-    }
-
 }

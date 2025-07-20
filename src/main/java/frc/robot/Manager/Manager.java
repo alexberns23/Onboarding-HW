@@ -56,6 +56,7 @@ public class Manager extends Subsystem<ManagerStates>{
 
         
             addTrigger(ManagerStates.SHOOTING, ManagerStates.IDLE, shooter::shouldStopShooting);
+            addTrigger(ManagerStates.SHOOTING, ManagerStates.IDLE, () -> this.getStateTime() > ManagerConstants.shootingTime);
 
         //from intaking
             addTrigger(ManagerStates.INTAKING, ManagerStates.GOING_TO_STAGING, controller::getXButtonPressed);

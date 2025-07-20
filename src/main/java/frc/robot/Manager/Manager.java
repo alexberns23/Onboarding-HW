@@ -1,7 +1,8 @@
 package frc.robot.Manager;
 
-import frc.robot.Intake.Intake;
-import frc.robot.Shooter.Shooter;
+import frc.robot.Subsystems.Intake.Intake;
+import frc.robot.Subsystems.Shooter.Shooter;
+import frc.robot.Subsystems.Dropper.Dropper;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DigitalInput;
 
@@ -9,22 +10,33 @@ import org.team7525.subsystem.Subsystem;
 
 public class Manager extends Subsystem<ManagerStates>{
 
-
-    private final Intake intake = new Intake();
-    private final Shooter shooter = new Shooter();
+    private static Manager instance;
+    private Intake intake;
+    private Shooter shooter;
+    private Dropper dropper;
 
     private final DigitalInput intakeSensor;
     private final DigitalInput dropperSensor;
 
-    private final XboxController controller = new XboxController(0);
+    private final XboxController controller = new XboxController(ManagerConstants.XBoxControllerPort);
+
+    public static Manager getInstance() {
+		if (instance == null) {
+			instance = new Manager();
+		}
+		return instance;
+	}
 
     public Manager() {
         super("Manager", ManagerStates.IDLE);
 
-        intakeSensor = new DigitalInput(0);
-        dropperSensor = new DigitalInput(1);
+        intake = Intake.getInstance();
+        shooter = Shooter.getInstance();
+        dropper = Dropper.getInstance();
+        intakeSensor = new DigitalInput(ManagerConstants.intakeSensorChannel);
+        dropperSensor = new DigitalInput(ManagerConstants.dropperSensorChannel);
     }
-
+    
 
     @Override
     public void runState() {
@@ -49,7 +61,6 @@ public class Manager extends Subsystem<ManagerStates>{
             addTrigger(ManagerStates.INTAKING, ManagerStates.GOING_TO_STAGING, controller::getXButtonPressed);
             addTrigger(ManagerStates.INTAKING, ManagerStates.IDLE, controller::getBButtonPressed);
             addTrigger(ManagerStates.INTAKING, ManagerStates.OUTTAKING, controller::getRightBumperPressed);
-            // not sure if ! op works like that
             addTrigger(ManagerStates.INTAKING, ManagerStates.IDLE, () -> !intakeSensor.get());
 
             addTrigger(ManagerStates.OUTTAKING, ManagerStates.INTAKING, controller::getRightBumperButtonReleased);
@@ -57,6 +68,6 @@ public class Manager extends Subsystem<ManagerStates>{
 
             intake.periodic();
             shooter.periodic();
-
+            dropper.periodic();
     }
 }

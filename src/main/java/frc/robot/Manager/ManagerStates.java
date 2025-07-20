@@ -1,8 +1,8 @@
 package frc.robot.Manager;
 
-import frc.robot.Intake.IntakeState;
-import frc.robot.Shooter.ShooterState;
-import frc.robot.Dropper.DropperState;
+import frc.robot.Subsystems.Intake.IntakeState;
+import frc.robot.Subsystems.Shooter.ShooterState;
+import frc.robot.Subsystems.Dropper.DropperState;
 
 import org.team7525.subsystem.SubsystemStates;
 

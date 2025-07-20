@@ -1,4 +1,4 @@
-package frc.robot.Intake;
+package frc.robot.Subsystems.Intake;
 
 import org.team7525.subsystem.SubsystemStates;
 
@@ -9,11 +9,11 @@ public enum IntakeState implements SubsystemStates {
     //0 - outtaking
     //45 - dropper
 
-    OFF("Off", 90, 0),
-    INTAKING("Intaking", 0, 10),
-    FEEDING_SHOOTER("Feeding Shooter", 90, -15),
-    FEEDING_DROPPER("Feeding Dropper", 45, -15),
-    OUTTAKING("Outtaking", 0, -10);
+    OFF("Off", IntakeConstants.positionOFF, IntakeConstants.speedOFF),
+    INTAKING("Intaking", IntakeConstants.positionINTAKING, IntakeConstants.speedINTAKING),
+    FEEDING_SHOOTER("Feeding Shooter", IntakeConstants.positionOFF, IntakeConstants.speedFEEDING),
+    FEEDING_DROPPER("Feeding Dropper", IntakeConstants.positionFEEDING_DROPPER, IntakeConstants.speedFEEDING),
+    OUTTAKING("Outtaking", IntakeConstants.positionINTAKING, IntakeConstants.speedOUTTAKING);
 
     private final String stateString;
     private final double position;

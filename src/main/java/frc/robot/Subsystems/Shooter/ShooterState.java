@@ -1,4 +1,4 @@
-package frc.robot.Shooter;
+package frc.robot.Subsystems.Shooter;
 
 import org.team7525.subsystem.SubsystemStates;
 

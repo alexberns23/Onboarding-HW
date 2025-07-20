@@ -1,11 +1,11 @@
-package frc.robot.Dropper;
+package frc.robot.Subsystems.Dropper;
 
 import org.team7525.subsystem.SubsystemStates;
 
 public enum DropperState implements SubsystemStates {
-    OFF("Off", 0.0),
+    OFF("Off", DropperConstants.speedOFF),
     STAGING("Staging", 0.0),
-    SCORING("Scoring", 10);
+    SCORING("Scoring", DropperConstants.speedScoring);
 
     private final String stateString;
     private final double speed;

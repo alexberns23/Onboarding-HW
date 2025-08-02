@@ -28,9 +28,6 @@ public final class ShooterConstants {
     public static final double flywheelSetInputVoltageMultiplier = 12;
     public static final double updateTime = 0.02;
 
-    public static final double secStopShooting = 1;
-    
-
     public static final int flywheelMotorID = 4;
     public static final int armMotorID = 5;
 

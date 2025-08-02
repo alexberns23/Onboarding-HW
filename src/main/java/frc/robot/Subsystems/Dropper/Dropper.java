@@ -2,8 +2,6 @@ package frc.robot.Subsystems.Dropper;
 
 import org.team7525.subsystem.Subsystem;
 
-import frc.robot.Subsystems.Intake.Intake;
-
 import static frc.robot.GlobalConstants.ROBOT_MODE;
 
 import org.littletonrobotics.junction.Logger;
@@ -42,6 +40,7 @@ public class Dropper extends Subsystem<DropperState> {
                 };
             instance = new Dropper(dropperIO);   
         }
+        return instance;
     }
 
 }

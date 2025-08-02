@@ -3,8 +3,9 @@ package frc.robot.Manager;
 import frc.robot.Subsystems.Intake.Intake;
 import frc.robot.Subsystems.Shooter.Shooter;
 import frc.robot.Subsystems.Dropper.Dropper;
-import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.DigitalInput;
+
+import static frc.robot.GlobalConstants.DRIVER_CONTROLLER;
 
 import org.team7525.subsystem.Subsystem;
 
@@ -18,7 +19,6 @@ public class Manager extends Subsystem<ManagerStates>{
     private final DigitalInput intakeSensor;
     private final DigitalInput dropperSensor;
 
-    private final XboxController controller = new XboxController(ManagerConstants.XBoxControllerPort);
 
     public static Manager getInstance() {
 		if (instance == null) {
@@ -43,29 +43,29 @@ public class Manager extends Subsystem<ManagerStates>{
 
         //from idle
             //a -> shooting
-            addTrigger(ManagerStates.IDLE, ManagerStates.SHOOTING, controller::getAButtonPressed);
+            addTrigger(ManagerStates.IDLE, ManagerStates.SHOOTING, DRIVER_CONTROLLER::getAButtonPressed);
             //b -> intaking
-            addTrigger(ManagerStates.IDLE, ManagerStates.INTAKING, controller::getBButtonPressed);
+            addTrigger(ManagerStates.IDLE, ManagerStates.INTAKING, DRIVER_CONTROLLER::getBButtonPressed);
             //x -> going to staging
-            addTrigger(ManagerStates.IDLE, ManagerStates.GOING_TO_STAGING, controller::getXButtonPressed);
+            addTrigger(ManagerStates.IDLE, ManagerStates.GOING_TO_STAGING, DRIVER_CONTROLLER::getXButtonPressed);
     
             addTrigger(ManagerStates.GOING_TO_STAGING, ManagerStates.STAGING, () -> !dropperSensor.get());
-            addTrigger(ManagerStates.STAGING, ManagerStates.SCORING, controller::getXButtonPressed);
+            addTrigger(ManagerStates.STAGING, ManagerStates.SCORING, DRIVER_CONTROLLER::getXButtonPressed);
             addTrigger(ManagerStates.SCORING, ManagerStates.IDLE, () -> !dropperSensor.get());
             
             addTrigger(ManagerStates.SHOOTING, ManagerStates.IDLE, () -> this.getStateTime() > ManagerConstants.shootingTime);
 
         //from intaking
-            addTrigger(ManagerStates.INTAKING, ManagerStates.GOING_TO_STAGING, controller::getXButtonPressed);
-            addTrigger(ManagerStates.INTAKING, ManagerStates.IDLE, controller::getBButtonPressed);
-            addTrigger(ManagerStates.INTAKING, ManagerStates.OUTTAKING, controller::getRightBumperPressed);
+            addTrigger(ManagerStates.INTAKING, ManagerStates.GOING_TO_STAGING, DRIVER_CONTROLLER::getXButtonPressed);
+            addTrigger(ManagerStates.INTAKING, ManagerStates.IDLE, DRIVER_CONTROLLER::getBButtonPressed);
+            addTrigger(ManagerStates.INTAKING, ManagerStates.OUTTAKING, DRIVER_CONTROLLER::getRightBumperPressed);
             addTrigger(ManagerStates.INTAKING, ManagerStates.IDLE, () -> !intakeSensor.get());
 
-            addTrigger(ManagerStates.OUTTAKING, ManagerStates.INTAKING, controller::getRightBumperButtonReleased);
+            addTrigger(ManagerStates.OUTTAKING, ManagerStates.INTAKING, DRIVER_CONTROLLER::getRightBumperButtonReleased);
 
 
             intake.periodic();
             shooter.periodic();
             dropper.periodic();
-    }
+    }   
 }

@@ -10,16 +10,19 @@ import com.ctre.phoenix6.swerve.SwerveDrivetrain.SwerveDriveState;
 import com.ctre.phoenix6.swerve.SwerveModule;
 import com.ctre.phoenix6.swerve.SwerveRequest;
 import edu.wpi.first.math.Matrix;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.units.measure.LinearVelocity;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.GlobalConstants.RobotMode;
 import frc.robot.Subsystems.Drive.TunerConstants.TunerSwerveDrivetrain;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
@@ -28,12 +31,19 @@ public class Drive extends Subsystem<DriveStates> {
 
 	private static Drive instance;
 
+	private edu.wpi.first.math.controller.ProfiledPIDController controller = new ProfiledPIDController(
+	PROFILED_PID_P, PROFILED_PID_I, PROFILED_PID_D, new TrapezoidProfile.Constraints(PROFILED_PID_METER_CONSTRAINT, PROFILED_PID_MAX_ACCEL), UPDATE_TIME
+	);
+
 	private DriveIO driveIO;
 	private DriveIOInputsAutoLogged inputs = new DriveIOInputsAutoLogged();
 	private boolean robotMirrored = false;
 	private Pose2d lastPose = new Pose2d();
 	private double lastTime = 0;
 	private final Field2d field = new Field2d();
+
+	private final Pose2d setpoint = new Pose2d(X_SETPOINT, Y_SETPOINT, ROTATION_SETPOINT);
+	private Pose2d currentPose = getInstance().getPose();
 
 	/**
 	 * Constructs a new Drive subsystem with the given DriveIO.
@@ -155,4 +165,16 @@ public class Drive extends Subsystem<DriveStates> {
 			driveIO.addVisionMeasurement(visionPose, timestamp, visionMeasurementStdDevs);
 		}
 	}
+
+	void autoAlign() {
+
+		
+		if(DRIVER_CONTROLLER.getLeftBumperButton())
+		this.controller.enableContinuousInput(MIN_PIDING_ANGLE, MAX_PIDING_ANGLE);
+		Drive.getInstance().driveFieldRelative(
+			controller.calculate(currentPose.getX(), setpoint.getX()), 
+			controller.calculate(currentPose.getY(), setpoint.getY()), 
+			controller.calculate(currentPose.getRotation().getDegrees(), setpoint.getRotation().getDegrees()));
+	}
+	
 }

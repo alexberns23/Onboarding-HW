@@ -14,6 +14,7 @@ import edu.wpi.first.units.measure.Distance;
 import edu.wpi.first.units.measure.LinearAcceleration;
 import edu.wpi.first.units.measure.LinearVelocity;
 import frc.robot.Subsystems.Drive.Drive.SysIdMode;
+import edu.wpi.first.math.util.Units;
 
 public class DriveConstants {
 
@@ -31,8 +32,6 @@ public class DriveConstants {
 
 	public static final LinearAcceleration MAX_LINEAR_DECELERATION = MetersPerSecondPerSecond.of(11);
 	public static final LinearAcceleration MAX_LINEAR_STOPPING_ACCELERATION = MetersPerSecondPerSecond.of(10);
-
-	public static final LinearAcceleration MAX_ELEVATOR_UP_ACCEL = MetersPerSecondPerSecond.of(2);
 
 	public static final LinearVelocity TIPPING_LIMITER_THRESHOLD = MetersPerSecond.of(3);
 
@@ -58,4 +57,21 @@ public class DriveConstants {
 	}
 
 	public static final RobotConfig ROBOT_CONFIG = geRobotConfig();
+
+	public static final double PROFILED_PID_P = 25;
+	public static final double PROFILED_PID_I = 0;
+	public static final double PROFILED_PID_D = 0;
+
+	public static final double PROFILED_PID_METER_CONSTRAINT = Units.feetToMeters(9);
+
+	public static final double PROFILED_PID_MAX_ACCEL = 7;
+	public static final double UPDATE_TIME = 0.02;
+
+	public static final double X_SETPOINT = 30;
+	public static final double Y_SETPOINT = 5;
+	public static Rotation2d ROTATION_SETPOINT = new Rotation2d(90);
+
+	public static final double MIN_PIDING_ANGLE = -180;
+	public static final double MAX_PIDING_ANGLE = 180;
 }
+

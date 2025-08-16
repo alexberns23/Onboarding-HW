@@ -26,12 +26,13 @@ import frc.robot.GlobalConstants.RobotMode;
 import frc.robot.Subsystems.Drive.TunerConstants.TunerSwerveDrivetrain;
 import org.littletonrobotics.junction.Logger;
 import org.team7525.subsystem.Subsystem;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 
 public class Drive extends Subsystem<DriveStates> {
 
 	private static Drive instance;
 
-	private edu.wpi.first.math.controller.ProfiledPIDController controller = new ProfiledPIDController(
+	private ProfiledPIDController controller = new ProfiledPIDController(
 	PROFILED_PID_P, PROFILED_PID_I, PROFILED_PID_D, new TrapezoidProfile.Constraints(PROFILED_PID_METER_CONSTRAINT, PROFILED_PID_MAX_ACCEL), UPDATE_TIME
 	);
 

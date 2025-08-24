@@ -4,6 +4,8 @@ import static edu.wpi.first.units.Units.*;
 import static frc.robot.GlobalConstants.*;
 import static frc.robot.Subsystems.Drive.DriveConstants.*;
 import static frc.robot.Subsystems.Drive.TunerConstants.kSpeedAt12Volts;
+import frc.robot.Manager.Manager;
+
 
 import com.ctre.phoenix6.Utils;
 import com.ctre.phoenix6.swerve.SwerveDrivetrain.SwerveDriveState;
@@ -43,8 +45,12 @@ public class Drive extends Subsystem<DriveStates> {
 	private double lastTime = 0;
 	private final Field2d field = new Field2d();
 
-	private final Pose2d setpoint = new Pose2d(X_SETPOINT, Y_SETPOINT, ROTATION_SETPOINT);
+	private AutoAlignStates AA;
 	private Pose2d currentPose = getInstance().getPose();
+	private Pose2d setpointAA;
+	private Pose pose; //there's def a way to not need this
+
+
 
 	/**
 	 * Constructs a new Drive subsystem with the given DriveIO.
@@ -167,15 +173,16 @@ public class Drive extends Subsystem<DriveStates> {
 		}
 	}
 
-	void autoAlign() {
+	public void autoAlign() {
 
-		
+		this.setpointAA = pose.correctPoseSide(AA.getSetPose());
+
 		if(DRIVER_CONTROLLER.getLeftBumperButton())
 		this.controller.enableContinuousInput(MIN_PIDING_ANGLE, MAX_PIDING_ANGLE);
 		Drive.getInstance().driveFieldRelative(
-			controller.calculate(currentPose.getX(), setpoint.getX()), 
-			controller.calculate(currentPose.getY(), setpoint.getY()), 
-			controller.calculate(currentPose.getRotation().getDegrees(), setpoint.getRotation().getDegrees()));
+			controller.calculate(currentPose.getX(), setpointAA.getX()), 
+			controller.calculate(currentPose.getY(), setpointAA.getY()), 
+			controller.calculate(currentPose.getRotation().getDegrees(), setpointAA.getRotation().getDegrees()));
 	}
 	
 }

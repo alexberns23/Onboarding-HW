@@ -21,6 +21,8 @@ public enum ManagerStates implements SubsystemStates{
     private DropperState dropperState;
     private String stateString;
 
+
+
     private ManagerStates(IntakeState intakeState, ShooterState shooterState, DropperState dropperState, String stateString) {
         this.intakeState = intakeState;
         this.stateString = stateString;

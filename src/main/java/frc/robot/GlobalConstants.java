@@ -11,6 +11,13 @@ public class GlobalConstants {
         SIM
     }
 
+    public enum RobotSide {
+        BLUE,
+        RED
+    }
+
+    public static final RobotSide ROBOT_SIDE = RobotSide.BLUE; //somehow make this work instead of just being blue
+
     public static final RobotMode ROBOT_MODE = RobotBase.isReal() ? RobotMode.REAL : RobotMode.SIM;
 
     public static final XboxController DRIVER_CONTROLLER = new XboxController(0);

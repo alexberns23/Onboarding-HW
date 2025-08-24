@@ -3,7 +3,11 @@ package frc.robot.Manager;
 import frc.robot.Subsystems.Intake.Intake;
 import frc.robot.Subsystems.Shooter.Shooter;
 import frc.robot.Subsystems.Dropper.Dropper;
+import frc.robot.Subsystems.Drive.Drive;
+
 import edu.wpi.first.wpilibj.DigitalInput;
+import frc.robot.Subsystems.Drive.AutoAlignStates;
+
 
 import static frc.robot.GlobalConstants.DRIVER_CONTROLLER;
 
@@ -15,6 +19,8 @@ public class Manager extends Subsystem<ManagerStates>{
     private Intake intake;
     private Shooter shooter;
     private Dropper dropper;
+    private AutoAlignStates autoAlign;
+    private Drive drive;
 
     private final DigitalInput intakeSensor;
     private final DigitalInput dropperSensor;
@@ -63,9 +69,25 @@ public class Manager extends Subsystem<ManagerStates>{
 
             addTrigger(ManagerStates.OUTTAKING, ManagerStates.INTAKING, DRIVER_CONTROLLER::getRightBumperButtonReleased);
 
+        //can't use trigger for autoalign bc i didn't use the subsystem framework with managerstates
+            if(DRIVER_CONTROLLER.getLeftBumperButtonPressed()) {
+                autoAlign = AutoAlignStates.DROPPER_GOAL;
+                drive.autoAlign();
+            }
+            //buttons dont' really make sense
+            if(DRIVER_CONTROLLER.getLeftBumperButtonPressed() && DRIVER_CONTROLLER.getAButtonPressed()) {
+                autoAlign = AutoAlignStates.SHOOTING_GOAL;
+                drive.autoAlign();
+            }
+
 
             intake.periodic();
             shooter.periodic();
             dropper.periodic();
-    }   
+    } 
+
+    // where does this go
+    public AutoAlignStates getAutoAlignState() {
+        return this.autoAlign;
+    }
 }
